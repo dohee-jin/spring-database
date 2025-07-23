@@ -48,7 +48,7 @@ public class BookRepository {
     }
 
     // 도서 제목, 저자 수정
-    public boolean updateTitleAndAuthor(Book book) {
+    public boolean updateTitleAndAuthor(Long id, Book book) {
         try(Connection conn = dataSource.getConnection()) {
 
             String sql = """
@@ -60,7 +60,7 @@ public class BookRepository {
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, book.getAuthor());
             pstmt.setString(2, book.getTitle());
-            pstmt.setLong(3, book.getId());
+            pstmt.setLong(3, id);
 
 
             int result = pstmt.executeUpdate();
@@ -119,7 +119,25 @@ public class BookRepository {
 
     // id로 단일조회 메소드
     public Book findById(Long id) {
-        tr
+        try(Connection conn = dataSource.getConnection()) {
+
+            String sql = """
+                        SELECT * FROM BOOKS
+                        WHERE ID = ?
+                    """;
+
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setLong(1, id);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.next()) return new Book(rs);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
 }

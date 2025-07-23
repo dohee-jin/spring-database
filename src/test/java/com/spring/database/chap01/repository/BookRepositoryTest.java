@@ -51,7 +51,7 @@ class BookRepositoryTest {
                 .id(3L)
                 .build();
         // when
-        boolean flag = bookRepository.updateTitleAndAuthor(updatedBook);
+        boolean flag = bookRepository.updateTitleAndAuthor(updatedBook.getId(), updatedBook);
 
         // then
         Assertions.assertFalse(!flag);
@@ -79,5 +79,19 @@ class BookRepositoryTest {
         assertEquals(3, bookList.size());
         assertNotNull(bookList.get(0));
         assertEquals("수정된 책", bookList.get(0).getTitle());
+    }
+
+    @Test
+    @DisplayName("id를 통해 개별조회를 하면 해당하는 도서 1개의 객체가 반환된다.")
+    void findSingleTest() {
+        // given
+        Long id = 3L;
+        // when
+        Book foundbook = bookRepository.findById(id);
+        // then
+        assertNotNull(foundbook);
+        assertTrue(foundbook.isAvailable());
+        assertEquals("수정된 책", foundbook.getTitle());
+        System.out.println("book = " + foundbook);
     }
 }
