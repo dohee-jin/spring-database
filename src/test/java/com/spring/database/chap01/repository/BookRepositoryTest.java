@@ -37,6 +37,7 @@ class BookRepositoryTest {
         boolean flag = bookRepository.save(givenBook);
 
         // then - 테스트 결과(단언)
+        // 내가 기대한 조건이 맞는지 체크
         Assertions.assertTrue(flag);
 
     }
