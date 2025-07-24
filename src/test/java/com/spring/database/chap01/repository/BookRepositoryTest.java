@@ -18,7 +18,7 @@ class BookRepositoryTest {
     // 5버전에서 부터는 생성자 주입을 막아둠 - 필드주입 해야됨
     /*private 말고 default 로 사용*/
     @Autowired
-    BookRepository bookRepository;
+    BookJdbcRepository bookRepository;
 
     // 테스트 메소드
     @Test

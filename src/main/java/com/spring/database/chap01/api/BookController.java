@@ -1,7 +1,7 @@
 package com.spring.database.chap01.api;
 
 import com.spring.database.chap01.entity.Book;
-import com.spring.database.chap01.repository.BookRepository;
+import com.spring.database.chap01.repository.BookJdbcRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class BookController {
 
     // 의존 객체 주입
-    private final BookRepository bookRepository;
+    private final BookJdbcRepository bookRepository;
 
     // 전체 조회 요청
     @GetMapping
