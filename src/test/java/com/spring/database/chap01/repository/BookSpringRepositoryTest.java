@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -54,5 +56,15 @@ class BookSpringRepositoryTest {
         boolean flag = bookSpringRepository.deleteById(id);
         // then
         Assertions.assertTrue(flag);
+    }
+
+    @Test
+    @DisplayName("")
+    void findAll() {
+        // given
+
+        // when
+        List<Book> all = bookSpringRepository.findAll();
+        // then
     }
 }
