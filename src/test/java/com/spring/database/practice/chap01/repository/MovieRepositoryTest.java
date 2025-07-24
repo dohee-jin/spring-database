@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class MovieRepositoryTest {
 
     @Autowired
-    MovieRepository movieRepository;
+    MovieJdbcRepository movieRepository;
 
     // 조회 테스트
     @Test
@@ -72,12 +72,13 @@ class MovieRepositoryTest {
                 .id(1L)
                 .build();
         // when
-        boolean flag = movieRepository.updateAll(updateAll.getId(), updateAll);
+        boolean flag = movieRepository.update(updateAll.getId(), updateAll);
         // then
         Assertions.assertTrue(flag);
     }
 
     // 리뷰 수정 테스트
+   /*
     @Test
     @DisplayName("리뷰만 수정한다.")
     void updateReviewTest() {
@@ -106,6 +107,7 @@ class MovieRepositoryTest {
         // then
         Assertions.assertTrue(flag);
     }
+    */
 
     // 삭제 테스트
     @Test

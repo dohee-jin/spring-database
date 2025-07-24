@@ -1,11 +1,9 @@
 package com.spring.database.practice.chap01.api;
 
 import com.spring.database.practice.chap01.entity.MovieRating;
-import com.spring.database.practice.chap01.repository.MovieRepository;
 import com.spring.database.practice.chap01.service.MovieRatingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -41,13 +39,13 @@ public class MovieRatingController {
 
     // 수정 - 리뷰, 별점 둘 다 수정
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateAll(@PathVariable Long id, @RequestBody MovieRating movie) {
-        movieRatingService.updateAll(id, movie);
+    public ResponseEntity<?> update(@PathVariable Long id, @RequestBody MovieRating movie) {
+        movieRatingService.updateReview(id, movie);
         return ResponseEntity.ok("리뷰, 별점 수정 성공!");
     }
 
     // 수정 - 리뷰 수정
-    @PutMapping("/{id}/reviews")
+   /* @PutMapping("/{id}/reviews")
     public ResponseEntity<?> updateReview(@PathVariable Long id, @RequestBody MovieRating movie) {
         movieRatingService.updateReview(id, movie);
         return ResponseEntity.ok("리뷰 수정 성공!");
@@ -58,7 +56,7 @@ public class MovieRatingController {
     public ResponseEntity<?> updateRating(@PathVariable Long id, @RequestBody MovieRating movie) {
         movieRatingService.updateRating(id, movie);
         return ResponseEntity.ok("별점 수정 성공!");
-    }
+    }*/
 
     // 삭제
     @DeleteMapping("/{id}")

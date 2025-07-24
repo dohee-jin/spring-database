@@ -1,12 +1,11 @@
 package com.spring.database.practice.chap01.service;
 
 import com.spring.database.practice.chap01.entity.MovieRating;
-import com.spring.database.practice.chap01.repository.MovieRepository;
+import com.spring.database.practice.chap01.repository.MovieJdbcRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.lang.ref.PhantomReference;
 import java.util.List;
 
 @Service
@@ -15,7 +14,7 @@ import java.util.List;
 public class MovieRatingService {
 
     // 의존 객체 설정
-    private final MovieRepository movieRepository;
+    private final MovieJdbcRepository movieRepository;
 
     // 전체 조회 요청에 대한 중간 처리
     public List<MovieRating> findAll() {
@@ -43,10 +42,11 @@ public class MovieRatingService {
 
     // 수정 요청에 대한 중간 처리
     // 리뷰, 평점 둘 다 수정
-    public void updateAll(Long id, MovieRating movie){
-        movieRepository.updateAll(id, movie);
+    public void updateReview(Long id, MovieRating movie){
+        movieRepository.update(id, movie);
     }
 
+    /*
     public void updateReview(Long id, MovieRating movie) {
         movieRepository.updateReview(id, movie);
     }
@@ -54,6 +54,7 @@ public class MovieRatingService {
     public void updateRating(Long id, MovieRating movie) {
         movieRepository.updateRating(id, movie);
     }
+    */
 
 
     // 삭제 요청에 대한 중간 처리
