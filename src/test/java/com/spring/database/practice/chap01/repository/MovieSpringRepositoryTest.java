@@ -48,5 +48,37 @@ class MovieSpringRepositoryTest {
         ratingList.forEach(System.out::println);
     }
 
+    // 개별 조회 테스트
+    @Test
+    @DisplayName("스프링 JDBC로 id에 해당하는 영화 리뷰 하나를 조회한다.")
+    void findOneReview() {
+        // given
+        Long id = 1L;
+        // when
+        MovieRating oneRating = movieSpringRepository.findOneRating(id);
+        // then
+        assertNotNull(oneRating);
+        System.out.println(oneRating);
+    }
+
+    // 수정 테스트
+    @Test
+    @DisplayName("스프링 JDBC로 id에 해당하는 영화 리뷰를 수정한다.")
+    void updateReview() {
+        // given
+        Long id = 4L;
+        MovieRating updateReview = MovieRating.builder()
+                .movieTitle("괴물")
+                .rating(3)
+                .review("사카모토유지일해라")
+                .id(id)
+                .watchedAt(LocalDate.of(2022, 07, 26))
+                .build();
+        // when
+        boolean update = movieSpringRepository.update(id, updateReview);
+        // then
+        Assertions.assertTrue(update);
+    }
+
 
 }

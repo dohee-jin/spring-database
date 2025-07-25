@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/practice/movie-rating")
+@RequestMapping("api/v1/practice/movie-ratings")
 @RequiredArgsConstructor
 public class MovieRatingController {
 

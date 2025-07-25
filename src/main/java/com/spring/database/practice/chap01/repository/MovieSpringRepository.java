@@ -58,19 +58,42 @@ public class MovieSpringRepository implements MovieRepository{
 
         String sql = """
                 SELECT * FROM movie_ratings
+                WHERE id = ?
                 """;
-
+        return template.queryForObject(sql, new RowMapper<MovieRating>() {
+            @Override
+            public MovieRating mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return new MovieRating(rs);
+            }
+        }, id);
     }
 
     // 수정
     @Override
     public boolean update(Long id, MovieRating movie) {
-        return false;
+
+        String sql = """
+                UPDATE movie_ratings
+                SET movie_title = ?,
+                    rating = ?,
+                    review = ?
+                WHERE id = ?
+                """;
+        return template.update(sql,
+                movie.getMovieTitle(),
+                movie.getRating(),
+                movie.getReview(),
+                id
+                ) == 1;
     }
 
     // 삭제
     @Override
     public boolean delete(Long id) {
-        return false;
+        String sql = """
+                DELETE FROM movie_ratings
+                WHERE id = ?
+                """;
+        return template.update(sql, id) == 1;
     }
 }

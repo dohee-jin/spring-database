@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.spring.database.practice.chap01_mybatis.ReviewMapper">
+
+    <!-- Create: 리뷰 생성 -->
+    <insert id="create">
+        INSERT INTO movie_ratings
+            (movie_title, rating, review, watched_at)
+        VALUES
+            (#{movieTitle}, #{rating}, #{review}, #{watchedAt})
+    </insert>
+
+    <!-- Read: 전체 조회 -->
+    <select id="findAll" resultType="com.spring.database.practice.chap01_mybatis.entity.Review">
+        SELECT * FROM movie_ratings
+    </select>
+
+    <!-- Read: 단일 조회 -->
+    <select id="findById" resultType="com.spring.database.practice.chap01_mybatis.entity.Review">
+        SELECT *
+        FROM movie_ratings
+        WHERE id = #{id}
+    </select>
+
+    <!-- Update: 수정 -->
+    <update id="update">
+        UPDATE movie_ratings
+        SET movie_title = #{movieTitle},
+            rating = #{rating},
+            review = #{review}
+        WHERE id = #{id}
+    </update>
+
+    <!-- Delete: 삭제 -->
+    <delete id="delete">
+        DELETE FROM movie_ratings
+        WHERE id = #{id}
+    </delete>
+
+</mapper>

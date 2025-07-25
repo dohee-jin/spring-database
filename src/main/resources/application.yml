@@ -10,6 +10,14 @@ spring:
     username: root
     password: mariadb
 
+# Mybatis Setting
+mybatis:
+  # SQL 파일의 위치  classpath - resources 파일 내에서 찾기, file - 로컬에서 찾기
+  mapper-locations: classpath:mappers/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.spring.database
+
 logging:
   level:
     root: INFO
