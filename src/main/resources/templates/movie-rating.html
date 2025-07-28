@@ -387,14 +387,14 @@
             const formData = new FormData(e.target);
             const reviewData = {
                 movieTitle: formData.get('movieTitle'),
-                rating: parseFloat(formData.get('rating')),
+                rating: parseInt(formData.get('rating')),
                 watchDate: formData.get('watchDate'),
                 review: formData.get('review')
             };
 
             // 유효성 검사
             if (!reviewData.rating || reviewData.rating < 1 || reviewData.rating > 10) {
-                alert('평점을 1.0~10.0 사이로 입력해주세요!');
+                alert('평점을 1 ~ 5 사이로 입력해주세요!');
                 return;
             }
 

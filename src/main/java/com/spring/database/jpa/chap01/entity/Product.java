@@ -44,10 +44,11 @@ public class Product {
     public void changeProduct(String newName, int newPrice, Category newCategory) {
         this.name = newName;
         this.price = newPrice;
-        this.category = newCategory
+        this.category = newCategory;
     }
 
     public enum Category {
         FOOD, FASHION, ELECTRONIC
     }
+
 }
