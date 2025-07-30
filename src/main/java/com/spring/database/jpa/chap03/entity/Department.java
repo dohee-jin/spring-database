@@ -50,7 +50,7 @@ public class Department {
 
         - orphanRemoval : 고아 객체 삭제 - 부모와의 연결이 끊어진 자식객체를 데이터베이스에서 삭제
      */
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "department", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     // 리스트 초기화가 안되서 직접 초기화 시켜야 함
     private List<Employee> employees = new ArrayList<>();
 
