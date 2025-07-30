@@ -378,6 +378,25 @@
             background-color: #fafafa;
         }
 
+        .modal-footer .btn {
+            padding: 6px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .modal-footer .btn-save {
+            background-color: #007bff;
+            color: white;
+            border: 1px solid #007bff;
+        }
+
+        .modal-footer .btn-cancel {
+            background-color: #f8f9fa;
+            color: #6c757d;
+            border: 1px solid #dee2e6;
+        }
+
         @media (max-width: 768px) {
             .container {
                 margin: 0 10px;
@@ -504,7 +523,7 @@
 
     <!-- 모달 -->
     <div id="editModal" class="modal-overlay">
-        <div class="modal-container">
+        <div class="modal-container" id="review1">
             <div class="modal-header">
                 <h3 class="modal-title">리뷰 수정</h3>
                 <button class="modal-close-btn">&times;</button>

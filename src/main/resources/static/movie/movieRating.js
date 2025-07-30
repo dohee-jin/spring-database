@@ -55,6 +55,15 @@ const fetchGetReviews = async () => {
     renderReviews(result);
 };
 
+// 서버에서 개별 리뷰를 가져오는 비동기 함수
+const fetchGetReview = async (id) => {
+    const res = await fetch(`${URL}/${id}`);
+    const result = await res.json();
+    console.log(result)
+    // 받아온 데이터로 모달 오픈 하면서 랜더링
+    openModal(result);
+}
+
 // 서버에 리뷰를 등록하는 비동기 함수
 const fetchPostReview = async () => {
 
@@ -124,11 +133,63 @@ const fetchDeleteReview = async (id) => {
 
 }
 
+// 리뷰를 수정하는 비동기 함수
+const fetchUpdateReview = async (id) => {
+
+    // 1. 폼에서 사용자가 입력한 제목, 평점, 감상일, 리뷰 내용 정보를 가져옵니다.
+    const $editMovieTitle = document.getElementById('editMovieTitle');
+    const $editRating = document.getElementById('editRating');
+    const $editReview = document.getElementById('editReview');
+    const $editWatchedAt = document.getElementById('editWatchedAt');
+
+    const payload = {
+        movie_title: $editMovieTitle.value,
+        rating: $editRating.value,
+        review: $editReview.value,
+        watched_at: $editWatchedAt.value
+    };
+
+    await fetch(`${URL}/${id}`, {
+        method: 'PUT',
+        headers: {'Content-Type' : 'application/json'},
+        body: JSON.stringify(payload)
+    });
+
+    await fetchGetReviews();
+
+    // 모달 닫기
+    closeModal();
+}
+
 // 모달 오픈 함수
-const openModal = () => {
+const openModal = (review) => {
     const $modalOverlay = document.querySelector('.modal-overlay');
+
     $modalOverlay.style.opacity = 1;
     $modalOverlay.style.visibility = 'visible';
+
+    console.log(review)
+
+    // 모달에 랜더링
+    const $modalContainer = document.querySelector('.modal-container');
+    const $editMovieTitle = document.getElementById('editMovieTitle');
+    const $editRating = document.getElementById('editRating');
+    const $editReview = document.getElementById('editReview');
+    const $editWatchedAt = document.getElementById('editWatchedAt');
+
+    // 수정 할 요소들 초기화
+    $editMovieTitle.value = ``;
+    $editRating.value = ``;
+    $editReview.value = ``;
+    $editWatchedAt.value = ``;
+
+    // 개별 조회 결과 값 랜더링
+    $modalContainer.setAttribute('id', review.id);
+    $editMovieTitle.value = review.movie_title;
+    $editRating.value = review.rating;
+    $editReview.value = review.review;
+    $editWatchedAt.value = review.watched_at;
+
 }
 
 // 모달 클로즈 함수
@@ -144,6 +205,7 @@ const addEventListeners = () => {
     const $reviewList = document.getElementById("reviewsList");
     const $modalCloseBtn = document.querySelector('.modal-close-btn');
     const $modalCancelBtn = document.querySelector('.btn-cancel');
+    const $editReviewForm = document.getElementById('editReviewForm');
 
     // 리뷰 등록 폼 제출 이벤트
     reviewFrom.addEventListener('submit', (e) => {
@@ -166,19 +228,28 @@ const addEventListeners = () => {
 
     });
 
-    // 리뷰 수정 이벤트
+    // 리뷰 모달 오픈 이벤트
     $reviewList.addEventListener('click', e => {
 
         if(!e.target.matches('.edit-btn')) return;
 
         console.log("수정 버튼 클릭!");
-        // 모달 오픈 이벤트
-        openModal();
 
         const reviewId = e.target.closest('.review-item').dataset.id;
-        // 개별 조회 > 모달에 데이터 랜더링 > 수정
+
+        // 모달 오픈 이벤트
+        // 1. 개별조회 > 모달 랜더링 후 모달 오픈
+        fetchGetReview(reviewId);
 
     });
+
+    // 모달 저장(수정) 이벤트
+    $editReviewForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const reviewId =  e.target.closest('.modal-container').id;
+        fetchUpdateReview(reviewId);
+
+    })
 
     // 모달 닫기 이벤트
     $modalCloseBtn.addEventListener('click', e => {

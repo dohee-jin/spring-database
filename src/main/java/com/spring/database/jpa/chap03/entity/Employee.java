@@ -3,7 +3,9 @@ package com.spring.database.jpa.chap03.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Getter @Setter @ToString(exclude = {"department"})
+@Getter @Setter
+// 연관관계 필드는 순환참조 방지를 위해 제외해야 함.
+@ToString(exclude = {"department"})
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,4 +34,11 @@ public class Employee {
     @JoinColumn(name = "dept_id") // FK 를 포함시키는건 DB 패러다임에 맞춰야 함
     private Department department;
 
+    // 부서 변경 편의 메소드
+    public void changeDepartment(Department department) {
+        // ManyToOne  필드가 변경이 일어나면 반대편쪽의 OneToMany도 같이 갱신
+        this.department = department; // 사원쪽에서 부서정보를 변경
+        // 양방향에서는 반대편에서도 수동으로 변경처리가 진행되어야 함.
+        department.getEmployees().add(this);
+    }
 }

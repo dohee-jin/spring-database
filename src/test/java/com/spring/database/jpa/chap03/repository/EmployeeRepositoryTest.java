@@ -86,4 +86,105 @@ class EmployeeRepositoryTest {
         Department department = employee.getDepartment();
         System.out.println("department = " + department);
     }
+
+    @Test
+    @DisplayName("특정 부서를 조회하면 해당 소속 사원들이 함께 조회된다.")
+    void FindDeptTest() {
+        // given
+        Long id = 1L;
+        // when
+        Department foundDept = departmentRepository.findById(id).orElseThrow();
+        // then
+        System.out.println(foundDept);
+        System.out.println(foundDept.getEmployees());
+    }
+
+    @Test
+    @DisplayName("양방향 매핑에서 데이터를 수정할 때 발생하는 문제")
+    void changeTest() {
+        // given
+        // 3번 사원의 부서를 2번 부서에서 1번 부서로 수정
+        Long id = 3L;
+        Employee foundEmp = employeeRepository.findById(id).orElseThrow();
+        Department department = foundEmp.getDepartment();
+        System.out.println("foundEmp = " + foundEmp + foundEmp.getDepartment());
+
+        // 1번 부서 조회
+        Department foundDept = departmentRepository.findById(1L).orElseThrow();
+
+        // when
+        /*foundEmp.setDepartment(foundDept); // 사원쪽에서 부서정보를 변경
+        // 양방향에서는 반대편에서도 수동으로 변경처리가 진행되어야 함.
+        foundDept.getEmployees().add(foundEmp);*/
+
+        // 연관관계 양방향 수정 편의 메소드
+        foundEmp.changeDepartment(foundDept);
+        employeeRepository.save(foundEmp);
+
+        // then
+        System.out.println("변경 후 사원정보:\n  " + foundEmp + foundEmp.getDepartment());
+
+        // 1번 부서의 사원정보를 다시 조회 -> 예상?? 3명
+        List<Employee> employees = foundDept.getEmployees();
+        System.out.println("employees = " + employees);
+        System.out.println("employees.size = " + employees.size());
+    }
+
+    @Test
+    @DisplayName("부서가 제거되면 cascade remove에 의해 해당 부서 사원이 모두 삭제된다.")
+    void cascadeTest() {
+        // given
+        Long deptId = 1L;
+        // when
+        departmentRepository.deleteById(deptId);
+        // then
+
+    }
+
+    @Test
+    @DisplayName("양방향 매핑 리스트에서 사원을 추가하면 DB에도 INSERT된다")
+    void persistTest() {
+        //given
+        // 2번 부서 조회
+        Department department = departmentRepository.findById(2L).orElseThrow();
+        // 새로운 사원 생성
+        Employee employee = Employee.builder()
+                .name("파이리")
+                .department(department)
+                .build();
+        //when
+//        employeeRepository.save(employee);
+        department.getEmployees().add(employee);
+
+        em.flush();
+        em.clear();
+
+        //then
+        Employee foundEmp = employeeRepository.findById(5L).orElseThrow();
+        System.out.println("foundEmp = " + foundEmp);
+        System.out.println("foundEmp.getDepartment() = " + foundEmp.getDepartment());
+    }
+
+    @Test
+    @DisplayName("양방향 매핑 리스트에서 사원을 제거하면 실제 DB에서 DELETE 된다.")
+    void orphanRemovalTest() {
+        // given
+        // 1번 부서 조회
+        Department foundDept = departmentRepository.findById(1L).orElseThrow();
+
+        // 1번 부서의 모든 사원 조회
+        /*
+            SELECT *
+            FROM tbl_emp
+            WHERE dept_id = 1
+            ;
+         */
+        List<Employee> employees = foundDept.getEmployees();
+
+        // 1번 사원을 지우고 싶음
+        employees.remove(0);
+
+        // when
+        // then
+    }
 }
