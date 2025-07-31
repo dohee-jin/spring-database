@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @Setter @ToString
+@Getter @Setter @ToString(exclude = {"enrollment"})
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "students")
-public class Student {
+public class Students {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,7 +28,7 @@ public class Student {
     @Column(name = "email")
     private String email;
 
-    @OneToMany(mappedBy = "student")
+    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Enrollment> enrollmentList = new ArrayList<>();
 
 }

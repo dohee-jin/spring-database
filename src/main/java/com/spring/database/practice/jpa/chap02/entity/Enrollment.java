@@ -1,11 +1,12 @@
 package com.spring.database.practice.jpa.chap02.entity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Getter @Setter @ToString
+@Getter @Setter @ToString(exclude = {"students", "course"})
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,13 +23,14 @@ public class Enrollment {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id")
-    private Student student;
+    private Students student;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course_id")
     private Course course;
 
-    @Column(name = "date")
+    @CreationTimestamp
+    @Column(name = "date", updatable = false)
     private LocalDateTime enrollmentDate;
 
     @Column(name = "progress")
@@ -36,4 +38,5 @@ public class Enrollment {
 
     @Column(name = "completed")
     private boolean completed;
+
 }

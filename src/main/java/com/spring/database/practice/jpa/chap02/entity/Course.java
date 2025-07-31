@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @Setter @ToString
+@Getter @Setter @ToString(exclude = {"enrollment"})
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,6 +29,6 @@ public class Course {
     @Column(name = "price")
     private int price;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Enrollment> enrollmentList = new ArrayList<>();
 }
