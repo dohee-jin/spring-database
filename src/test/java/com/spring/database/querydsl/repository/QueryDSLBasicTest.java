@@ -60,6 +60,12 @@ class QueryDSLBasicTest {
         Idol idol3 = new Idol("시온", 24, nctwish);
         Idol idol4 = new Idol("리쿠", 23, nctwish);
 
+        riize.addIdol(idol1);
+        riize.addIdol(idol2);
+
+        nctwish.addIdol(idol3);
+        nctwish.addIdol(idol4);
+
         idolRepository.save(idol1);
         idolRepository.save(idol2);
         idolRepository.save(idol3);
@@ -120,20 +126,20 @@ class QueryDSLBasicTest {
                 """;
         // when
         Idol foundIdol = jdbcTemplate.queryForObject(sql, (ResultSet rs, int n) -> new Idol(
-                rs.getLong("idol_id")
-                , rs.getString("idol_name")
-                , rs.getInt("age")
-                , null
+//                rs.getLong("idol_id")
+//                , rs.getString("idol_name")
+//                , rs.getInt("age")
+//                , null
         ), "성찬");
 
         Group foundGroup = jdbcTemplate.queryForObject("""
                 SELECT *
                 FROM tbl_group
                 WHERE group_id = ?
-                """, (ResultSet rs, int n) -> new Group(
-                rs.getLong("group_id")
-                , rs.getString("group_name")
-                , null
+//                """, (ResultSet rs, int n) -> new Group(
+//                rs.getLong("group_id")
+//                , rs.getString("group_name")
+//                , null
         ), 1);
 
         foundIdol.setGroup(foundGroup);
@@ -234,11 +240,11 @@ class QueryDSLBasicTest {
         Idol foundIdol = fetchOne.orElse(new Idol("은석", 25, riize));
         idolRepository.save(foundIdol);
 
-        Group group1 = foundIdol.getGroup();
-        System.out.println(group1);
-        System.out.println("foundIdol = " + foundIdol);
-        System.out.println("group1.getIdols() = " + group1.getIdols());
-        
+        List<Idol> idolList1 = factory.selectFrom(idol)
+                .where(idol.group.groupName.eq(foundIdol.getGroup().getGroupName()))
+                .fetch();
+
+        idolList1.forEach(idol1 -> System.out.println(idol1.getIdolName()));
 
     }
 

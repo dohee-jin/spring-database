@@ -22,19 +22,34 @@ public class Idol {
 
     private int age;
 
+    private String gender;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "group_id") // 상대편(1이되는) FK
     private Group group;
 
+    public Idol(String idolName, int age, Group group) {
+        this.idolName = idolName;
+        this.age = age;
+        if (group != null) {
+            changeGroup(group);
+        }
+    }
+
+    // 추가된 생성자
+    public Idol(String idolName, int age, String gender, Group group) {
+        this.idolName = idolName;
+        this.age = age;
+        this.gender = gender;
+        if (group != null) {
+            changeGroup(group);
+        }
+    }
+
     // 아이돌의 그룹을 변경하는 수정 편의 메소드
-    public void changedGroup(Group group) {
+    public void changeGroup(Group group) {
         this.group = group;
         group.getIdols().add(this);
     }
 
-    public Idol(String idolName, int age, Group group) {
-        this.idolName = idolName;
-        this.age = age;
-        this.group = group;
-    }
 }

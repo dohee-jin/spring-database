@@ -6,7 +6,7 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter @Setter @ToString(exclude = {"idols"})
+@Getter @Setter @ToString(exclude = {"idols", "albums"})
 @EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,6 +25,9 @@ public class Group {
     // Many가 되는 쪽에서 One을 뭐라고 부르는지에 따라 mappedBy 이름을 설정
     @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
     List<Idol> idols = new ArrayList<>();
+
+    @OneToMany(mappedBy = "group", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<Album> albums = new ArrayList<>();
 
     // 양방향 리스트 편의 메소드
     // 데이터 추가
